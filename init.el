@@ -49,7 +49,7 @@
 (require 'package)
 
 (setq package-archives
-      '(("gnu"    . "https://elpa.gnu.org/packages/")
+      '(("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
 	("melpa" . "https://melpa.org/packages/")))
 
@@ -62,11 +62,29 @@
 ;;INSTALLED PACKAGES
 ;;------------------
 
+;(use-package benchmark-init
+;  :ensure t
+;  :config
+;  (benchmark-init/activate)
+;  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
+(use-package project
+  :defer t)
+
+(use-package xref
+  :defer t)
+
+(use-package etags
+  :defer t)
+
 (setq byte-compile-warnings '(not lexical-binding))
 (use-package exec-path-from-shell
   :ensure t
+  :commands (exec-path-from-shell-initialize)
   :config
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-copy-env "PATH")
+  (exec-path-from-shell-initialize)
+  :init(setq exec-path-from-shell-arguments '("-l")))
 
 ;;YAML
 (use-package yaml-mode
@@ -78,7 +96,6 @@
   :ensure t
   :mode ("\\.json\\'" . json-mode))
 
-
 ;;COMPANY
 (use-package company
   :ensure t
@@ -88,16 +105,17 @@
   (setq company-idle-delay 0.2)
   (setq company-minimum-prefix-length 1))
 
-;;OCAML
+;;Ocaml
 (use-package tuareg
   :ensure t
   :mode ("\\.ml\\'" . tuareg-mode)
   :init
   (add-to-list 'load-path "~/.opam/default/share/emacs/site-lisp")
-  (require 'merlin)
   :hook
-  ((tuareg-mode . merlin-mode)
-   (tuareg-mode . company-mode))
+  ((tuareg-mode . (lambda ()
+		    (require 'merlin)
+		    (merlin-mode)
+		    (company-mode))))
   :config
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'merlin-company-backend)))

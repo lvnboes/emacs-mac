@@ -7,9 +7,7 @@
  '(ns-alternate-modifier 'meta)
  '(ns-command-modifier 'meta)
  '(ns-right-alternate-modifier 'none)
- '(package-selected-packages
-   '(company-jedi exec-path-from-shell json-mode slime-company tuareg
-		  yaml-mode)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
