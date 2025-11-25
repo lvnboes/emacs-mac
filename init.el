@@ -40,8 +40,10 @@
 ;;------
 ;;THEMES
 ;;------
-(load-theme 'deeper-blue t)
+;(load-theme 'deeper-blue t)
 ;(load-theme 'wombat t)
+(load-theme 'tango-dark t)
+;(load-theme 'modus-vivendi-tinted t)
 
 ;;------------------
 ;;PACKAGE MANAGEMENT
@@ -121,12 +123,29 @@
     (add-to-list 'company-backends 'merlin-company-backend)))
 
 ;; PYTHON
+(let ((pyenv-shims (expand-file-name "~/.pyenv/shims")))
+  (setenv "PATH" (concat pyenv-shims ":" (getenv "PATH")))
+  (add-to-list 'exec-path pyenv-shims))
+
+(defun my/set-pyenv-version ()
+  "Set PYENV_VERSION from the project .python-version file, if it exists."
+  (let* ((project-root (ignore-errors (project-root (project-current))))
+         (version-file (and project-root
+                            (expand-file-name ".python-version" project-root))))
+    (when (and version-file (file-exists-p version-file))
+      (let ((version (string-trim (with-temp-buffer
+                                    (insert-file-contents version-file)
+                                    (buffer-string)))))
+        (setenv "PYENV_VERSION" version)))))
+
+(add-hook 'python-mode-hook #'my/set-pyenv-version)
+
+
 (use-package eglot
   :ensure t
   :hook
   ((python-mode . eglot-ensure))
   :config
-  ;; Register pylsp as the Python LSP server
   (add-to-list 'eglot-server-programs
                '(python-mode . ("pylsp"))))
 
