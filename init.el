@@ -8,7 +8,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
-(setq-default display-line-numbers-type 'relative)
+(setq-default display-line-numbers-type 'absolute)
 (global-display-line-numbers-mode 1)
 (recentf-mode 1)
 (setq-default recentf-max-menu-items 50)
