@@ -6,6 +6,7 @@
  ;; If there is more than one, they won't work right.
  '(ns-alternate-modifier 'meta)
  '(ns-command-modifier 'meta)
+ '(ns-right-alternate-modifer 'none)
  '(ns-right-alternate-modifier 'none)
  '(package-selected-packages nil))
 (custom-set-faces

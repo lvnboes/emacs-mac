@@ -8,8 +8,10 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
+;(global-display-line-numbers-mode -1)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
 (setq-default display-line-numbers-type 'absolute)
-(global-display-line-numbers-mode 1)
 (recentf-mode 1)
 (setq-default recentf-max-menu-items 50)
 (global-auto-revert-mode 1)
@@ -23,17 +25,15 @@
 (custom-set-variables
  '(ns-command-modifier 'meta)
  '(ns-alternate-modifier 'meta)
- '(ns-right-alternate-modifier 'none))
+ '(ns-right-alternate-modifer 'none))
 
 ;;-----------------------------
 ;;SET AND LOAD CUSTOM VARS FILE
 ;;-----------------------------
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
-;; Put all backups in ~/.emacs.d/backups/
 (setq backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
 (setq backup-by-copying t)
-;; Put autosave files in ~/.emacs.d/autosaves/
 (make-directory "~/.emacs.d/autosaves/" t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/" t)))
 
@@ -42,8 +42,8 @@
 ;;------
 ;(load-theme 'deeper-blue t)
 ;(load-theme 'wombat t)
-(load-theme 'tango-dark t)
-;(load-theme 'modus-vivendi-tinted t)
+;(load-theme 'tango-dark t)
+(load-theme 'modus-vivendi-tinted t)
 
 ;;------------------
 ;;PACKAGE MANAGEMENT
@@ -70,6 +70,12 @@
 ;  (benchmark-init/activate)
 ;  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (setq exec-path-from-shell-arguments '("-l"))
+  (exec-path-from-shell-initialize))
+
 (use-package project
   :defer t)
 
@@ -79,14 +85,11 @@
 (use-package etags
   :defer t)
 
-(setq byte-compile-warnings '(not lexical-binding))
-(use-package exec-path-from-shell
+;PDF
+(setq pdf-view-resize-factor 1.05)
+(use-package pdf-tools
   :ensure t
-  :commands (exec-path-from-shell-initialize)
-  :config
-  (exec-path-from-shell-copy-env "PATH")
-  (exec-path-from-shell-initialize)
-  :init(setq exec-path-from-shell-arguments '("-l")))
+  :mode ("\\.pdf\\'" . pdf-view-mode))
 
 ;;YAML
 (use-package yaml-mode
