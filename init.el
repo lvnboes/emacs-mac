@@ -20,6 +20,7 @@
 (setq-default display-fill-column-indicator-column 80)
 (global-display-fill-column-indicator-mode 1)
 (column-number-mode 1)
+(setq-default line-spacing 0.4)
 
 ;;Mac keybindings
 (custom-set-variables
